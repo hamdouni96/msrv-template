@@ -15,9 +15,9 @@ jobs:
 
       - name: Set up kubectl
         env:
-          KUBECONFIG_DATA: ${{ secrets.KUBE_CONFIG_TOKEN }}
+          KUBE_CONFIG_TOKEN: ${{ secrets.KUBE_CONFIG_TOKEN }}
         run: |
-          echo "${{ secrets.KUBE_CONFIG_TOKEN }}" | base64 --decode > kubeconfig.yaml
+          echo "${{ secrets.KUBE_CONFIG_TOKEN }}" > kubeconfig.yaml
           kubectl config use-context minikube
 
       - name: Install Skaffold
