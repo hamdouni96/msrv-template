@@ -18,6 +18,8 @@ jobs:
           KUBE_CONFIG_TOKEN: ${{ secrets.KUBE_CONFIG_TOKEN }}
         run: |
           echo "${{ secrets.KUBE_CONFIG_TOKEN }}" > kubeconfig.yaml
+          kubectl config set-credentials minikube --token="${{ secrets.KUBE_CONFIG_TOKEN }}"
+          kubectl config set-context minikube --cluster=minikube --user=minikube
           kubectl config use-context minikube
 
       - name: Install Skaffold
