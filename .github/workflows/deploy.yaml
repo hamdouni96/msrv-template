@@ -48,4 +48,4 @@ jobs:
 
       - name: Deploy using Skaffold
         run: |
-          skaffold -v=debug
+          skaffold dev -v=debug
