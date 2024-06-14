@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -48,4 +48,4 @@ jobs:
 
       - name: Deploy using Skaffold
         run: |
-          skaffold dev
+          skaffold -v=debug
