@@ -13,6 +13,19 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Set up kubectl
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG_TOKEN }}
+        run: |
+          echo "${{ secrets.KUBE_CONFIG_TOKEN }}" > kubeconfig.yaml
+          export KUBECONFIG=$(pwd)/kubeconfig.yaml
+
+      - name: Verify kubectl context
+        run: kubectl config get-contexts
+
+      - name: Verify Minikube status
+        run: kubectl cluster-info
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -34,18 +47,12 @@ jobs:
           docker build -t noura5/payments1 ./payments
           docker push noura5/payments1
 
-      - name: Set up kubectl and Skaffold
-        env:
-          KUBE_CONFIG_TOKEN: ${{ secrets.KUBE_CONFIG_TOKEN }}
+      - name: Set up Skaffold
         run: |
-          echo "${{ secrets.KUBE_CONFIG_TOKEN }}" > kubeconfig.yaml
-          kubectl config set-credentials minikube --token="${{ secrets.KUBE_CONFIG_TOKEN }}"
-          kubectl config set-context minikube --cluster=minikube --user=minikube
-          kubectl config use-context minikube
           curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
           chmod +x skaffold
           mv skaffold /usr/local/bin
 
       - name: Deploy using Skaffold
         run: |
-          skaffold dev -v=debug
+          skaffold run -v=debug
