@@ -25,7 +25,12 @@ jobs:
           docker push noura5/auth1
           docker build -t noura5/ticketing-client1 ./client
           docker push noura5/ticketing-client1
-          # Repeat for other images...
+          docker build -t noura5/orders1 ./orders
+          docker push noura5/orders1
+          docker build -t noura5/payments1 ./payments
+          docker push noura5/payments1
+          docker build -t noura5/tickets1 ./tickets
+          docker push noura5/tickets1
 
       - name: Set up Minikube Docker Environment
         run: eval $(minikube -p minikube docker-env)
